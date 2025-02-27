@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fexion | Modern Healthcare Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        
+        .loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader h1 {
+            font-size: 3rem;
+            letter-spacing: 0.3rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.2rem;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+        }
+        
+        .hero-text {
+            max-width: 800px;
+        }
+        
+        .hero-text h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards;
+            animation-delay: 0.5s;
+        }
+        
+        .hero-text p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards;
+            animation-delay: 0.8s;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards;
+            animation-delay: 1.1s;
+            transition: transform 0.3s;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-5px);
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-visual {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .hero-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+        
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2;
+        }
+        
+        .services {
+            padding: 10rem 5%;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 5rem;
+            text-align: center;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .service-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .approach {
+            padding: 10rem 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .approach-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5rem;
+            align-items: center;
+        }
+        
+        .approach-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .approach-text h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .approach-text p {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .approach-visual {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            margin: 0 auto;
+            filter: blur(20px);
+            animation: pulse-glow 4s infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { transform: scale(0.9); opacity: 0.7; }
+            to { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .testimonials {
+            padding: 10rem 5%;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .testimonial-slider {
+            display: flex;
+            overflow-x: hidden;
+            scroll-snap-type: x mandatory;
+            margin-top: 5rem;
+            position: relative;
+        }
+        
+        .testimonial {
+            min-width: 100%;
+            scroll-snap-align: start;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .testimonial-content {
+            max-width: 800px;
+        }
+        
+        .testimonial-content p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .testimonial-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .testimonial-dot.active {
+            background-color: #3498db;
+        }
+        
+        .contact {
+            padding: 10rem 10%;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #3498db;
+        }
+        
+        .contact-info p, .contact-info a {
+            display: block;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .contact-info a:hover {
+            opacity: 1;
+        }
+        
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .contact-form button {
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .contact-form button:hover {
+            transform: translateY(-5px);
+        }
+        
+        footer {
+            padding: 5rem 10%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 0.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-social a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background-color: #3498db;
+        }
+        
+        .copyright {
+            opacity: 0.5;
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        
+        .cursor.hover {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-visual {
+                width: 100%;
+                opacity: 0.2;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cursor {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <h1>FEXION</h1>
+    </div>
+    
+    <div class="cursor"></div>
+    
+    <nav>
+        <a href="#" class="logo">FEXION</a>
+        <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#approach">Our Approach</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+    
+    <header>
+        <div class="hero-text">
+            <h1>Modern Healthcare Solutions for a Healthier Future</h1>
+            <p>Fexion combines cutting-edge technology with compassionate care to deliver exceptional healthcare experiences. Our innovative approach ensures better outcomes for patients and healthcare providers alike.</p>
+            <a href="#contact" class="hero-btn">Schedule a Consultation</a>
+        </div>
+        <div class="hero-visual">
+            <img src="/api/placeholder/800/600" alt="Healthcare Technology">
+        </div>
+        <div id="particles-js"></div>
+    </header>
+    
+    <section id="services" class="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <h3>Preventive Care</h3>
+                <p>Our preventive healthcare solutions help identify risks before they become problems, using advanced analytics and personalized health monitoring systems.</p>
+            </div>
+            <div class="service-card">
+                <h3>Telehealth Services</h3>
+                <p>Connect with healthcare professionals instantly through our secure telehealth platform, bringing expert medical advice to your fingertips 24/7.</p>
+            </div>
+            <div class="service-card">
+                <h3>Health Analytics</h3>
+                <p>Make informed decisions based on comprehensive health data analysis, personalizing treatment plans and improving long-term outcomes.</p>
+            </div>
+            <div class="service-card">
+                <h3>Virtual Wellness</h3>
+                <p>Experience our immersive wellness programs designed to improve mental and physical health through innovative virtual reality environments.</p>
+            </div>
+            <div class="service-card">
+                <h3>Medical Innovations</h3>
+                <p>Access cutting-edge medical technologies and treatments that are reshaping the future of healthcare through our innovation partnerships.</p>
+            </div>
+            <div class="service-card">
+                <h3>Care Coordination</h3>
+                <p>Our integrated care system connects all aspects of your healthcare journey, ensuring seamless communication between providers and patients.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="approach" class="approach">
+        <div class="approach-content">
+            <div class="approach-text">
+                <h2>Our Approach to Healthcare</h2>
+                <p>At Fexion, we believe healthcare should be proactive, personalized, and powered by innovation. Our holistic approach combines the latest in medical technology with compassionate human care.</p>
+                <p>By leveraging artificial intelligence, data analytics, and immersive technologies, we're able to identify health trends and provide interventions earlier, resulting in better outcomes and reduced costs.</p>
+                <p>We're committed to making healthcare more accessible, transparent, and effective for everyone. This means reimagining every aspect of the healthcare experience from preventive care to chronic disease management.</p>
+            </div>
+            <div class="approach-visual">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="testimonials" class="testimonials">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Fexion revolutionized our hospital's approach to patient care. Their innovative solutions have significantly improved patient outcomes while reducing staff burnout. A true partner in healthcare transformation."</p>
+                    <div class="testimonial-author">Dr. Sarah Johnson, Medical Director</div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"After implementing Fexion's telehealth platform, we've seen a 40% increase in patient satisfaction and a 30% reduction in unnecessary emergency room visits. Their technology is both powerful and intuitive."</p>
+                    <div class="testimonial-author">Michael Chen, Healthcare Administrator</div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"As someone with a chronic condition, Fexion's continuous monitoring tools have changed my life. I feel empowered to manage my health proactively, and my physician has much better insights into my condition."</p>
+                    <div class="testimonial-author">Rebecca Williams, Patient</div>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-nav">
+            <div class="testimonial-dot active"></div>
+            <div class="testimonial-dot"></div>
+            <div class="testimonial-dot"></div>
+        </div>
+    </section>
+    
+    <section id="contact" class="contact">
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>123 Innovation Way, Healthcare City</p>
+                <a href="tel:+1234567890">+1 (234) 567-890</a>
+                <a href="mailto:info@fexion.health">info@fexion.health</a>
+                
+                <h3>Hours of Operation</h3>
+                <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
+                <p>Saturday: 9:00 AM - 5:00 PM</p>
+                <p>Sunday: Closed</p>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="tel" placeholder="Your Phone Number">
+                    <textarea placeholder="How can we help you?"></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-logo">FEXION</div>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#services">Services</a>
+            <a href="#approach">Our Approach</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#contact">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-social">
+            <a href="#">FB</a>
+            <a href="#">TW</a>
+            <a href="#">IG</a>
+            <a href="#">LI</a>
+        </div>
+        <div class="copyright">© 2025 Fexion Healthcare. All rights reserved.</div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Loader animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('fade-out');
+            }, 1500);
+        });
+        
+        // Particles background
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#3498db' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#3498db',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'out'
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'grab' },
+                    onclick: { enable: true, mode: 'push' }
+                },
+                modes: {
+                    grab: { distance: 140, line_linked: { opacity: 0.5 } },
+                    push: { particles_nb: 4 }
+                }
+            }
+        });
+        
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const links = document.querySelectorAll('a, button');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+        
+        // Testimonial slider
+        const dots = document.querySelectorAll('.testimonial-dot');
+        const slider = document.querySelector('.testimonial-slider');
+        const testimonials = document.querySelectorAll('.testimonial');
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                // Update active dot
+                document.querySelector('.testimonial-dot.active').classList.remove('active');
+                dot.classList.add('active');
+                
+                // Scroll to the corresponding testimonial
+                slider.scrollTo({
+                    left: testimonials[index].offsetLeft,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
